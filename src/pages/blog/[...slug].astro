@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts
+    .filter((p) => !p.data.draft)
+    .map((post) => ({
+      params: { slug: post.slug },
+      props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BlogPost
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  tags={post.data.tags}
+  rawBody={post.body}
+>
+  <Content />
+</BlogPost>
+
+<style>
+  :global(.post-body) {
+    font-size: var(--fs-body);
+  }
+  :global(.post-body h2) {
+    font-size: 1.45rem;
+    margin: 2.2em 0 0.8em;
+    padding-bottom: 0.35em;
+    border-bottom: 1px solid var(--rule);
+  }
+  :global(.post-body h3) {
+    font-size: 1.2rem;
+    margin: 1.8em 0 0.6em;
+  }
+  :global(.post-body p) {
+    margin: 0 0 1.4em;
+  }
+  :global(.post-body a) {
+    color: var(--seal);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  :global(.post-body blockquote) {
+    margin: 1.6em 0;
+    padding: 0.2em 1.2em;
+    border-left: 3px solid var(--seal);
+    background: var(--paper-2);
+    color: var(--ink-soft);
+  }
+  :global(.post-body code:not(pre code)) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--paper-2);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+  }
+  :global(.post-body pre) {
+    background: #262a33;
+    color: #e8e6e1;
+    padding: 1.2em 1.4em;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin: 1.6em 0;
+  }
+  :global(.post-body ul),
+  :global(.post-body ol) {
+    margin: 0 0 1.4em;
+    padding-left: 1.5em;
+  }
+  :global(.post-body li) {
+    margin-bottom: 0.4em;
+  }
+  :global(.post-body img) {
+    border-radius: 8px;
+    margin: 1.8em auto;
+  }
+  :global(.post-body hr) {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5em auto;
+    max-width: 40%;
+  }
+</style>

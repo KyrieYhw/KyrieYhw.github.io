@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+<BaseLayout
+  title="文章"
+  description="全部文章:AI Agent 学习笔记、论文阅读与生活随笔。"
+  page="blog"
+>
+  <section class="wrap archive">
+    <header class="archive-head measure">
+      <span class="eyebrow">Archive</span>
+      <h1 class="serif archive-title">全部文章</h1>
+      <p class="archive-count mono">{posts.length} posts · {tags.length} tags</p>
+    </header>
+
+    {tags.length > 0 && (
+      <nav class="tagbar" aria-label="标签筛选">
+        {tags.map((t) => (
+          <a href={`/tags/${t}/`} class="tagbar-item mono">#{t}</a>
+        ))}
+      </nav>
+    )}
+
+    <PostList posts={posts} numbered />
+  </section>
+</BaseLayout>
+
+<style>
+  .archive { padding: var(--space-5) 0 0; }
+  .archive-head { margin-bottom: var(--space-4); }
+  .archive-title { font-size: var(--fs-h2); margin: 0.25rem 0 0.5rem; }
+  .archive-count { color: var(--ink-faint); font-size: var(--fs-meta); margin: 0; }
+  .tagbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: var(--space-2);
+  }
+  .tagbar-item {
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+  }
+  .tagbar-item:hover { color: var(--seal); }
+</style>

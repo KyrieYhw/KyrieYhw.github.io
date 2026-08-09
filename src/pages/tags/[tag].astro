@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const tagSet = new Set<string>();
+  posts.forEach((p) => p.data.tags.forEach((t) => tagSet.add(t)));
+  return [...tagSet].map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft && p.data.tags.includes(tag))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout
+  title={`标签 · ${tag}`}
+  description={`「${tag}」标签下的文章`}
+  page="blog"
+>
+  <section class="wrap tag-page">
+    <header class="tag-head measure">
+      <span class="eyebrow">Tag</span>
+      <h1 class="serif tag-title">#{tag}</h1>
+      <p class="tag-count mono">{posts.length} posts</p>
+    </header>
+    <PostList posts={posts} numbered />
+    <p class="back">
+      <a href="/blog/" class="serif">← 返回全部文章</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .tag-page { padding: var(--space-5) 0 0; }
+  .tag-head { margin-bottom: var(--space-4); }
+  .tag-title { font-size: var(--fs-h2); margin: 0.25rem 0 0.5rem; }
+  .tag-count { color: var(--ink-faint); font-size: var(--fs-meta); margin: 0; }
+  .back { margin-top: var(--space-3); }
+  .back a { color: var(--ink-soft); }
+  .back a:hover { color: var(--seal); }
+</style>

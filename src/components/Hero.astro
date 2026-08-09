@@ -1,0 +1,96 @@
+---
+import { SITE } from '../consts';
+import Seal from './Seal.astro';
+---
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Research Notes · AI Agent</p>
+    <h1 class="hero-title serif">{SITE.title}<span class="hero-sub"> · 研究手记</span></h1>
+    <p class="hero-tagline">{SITE.tagline}</p>
+
+    <div class="hero-cta">
+      <a href="/blog/" class="cta-primary">
+        <span>阅读文章</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="/about/" class="cta-secondary">
+        <span>关于我</span>
+      </a>
+    </div>
+
+    <Seal text={SITE.sealText} size={92} />
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: var(--space-6) 0 var(--space-5);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .hero-inner {
+    position: relative;
+  }
+  .hero-title {
+    font-size: var(--fs-hero);
+    margin: var(--space-2) 0 var(--space-2);
+    letter-spacing: 0.04em;
+  }
+  .hero-sub {
+    color: var(--ink-faint);
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .hero-tagline {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 34em;
+    margin: 0 0 var(--space-4);
+  }
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .cta-primary,
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 6px;
+    font-size: var(--fs-small);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .cta-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .cta-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(31, 35, 40, 0.18);
+  }
+  .cta-primary .arrow { transition: transform 0.15s; }
+  .cta-primary:hover .arrow { transform: translateX(3px); }
+  .cta-secondary {
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    background: transparent;
+  }
+  .cta-secondary:hover {
+    border-color: var(--ink);
+    background: var(--paper-2);
+  }
+  /* 印章放在 hero 右上角,呼应「私章」概念 */
+  .seal {
+    position: absolute;
+    top: 0.25rem;
+    right: 0;
+    opacity: 0.92;
+  }
+  @media (max-width: 640px) {
+    .hero { padding-top: var(--space-5); }
+    .hero-tagline { font-size: 1.05rem; }
+    .seal { position: static; margin-top: var(--space-4); }
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../consts';
+---
+<BaseLayout title="关于" description="关于这个博客和作者" page="about">
+  <article class="wrap about-page">
+    <header class="about-head measure">
+      <span class="eyebrow">About</span>
+      <h1 class="serif">关于</h1>
+    </header>
+
+    <div class="about-body measure">
+      <h2 class="serif">这个博客</h2>
+      <p>
+        这是我的个人空间,取名「{SITE.title}」,来自
+        <em>桃李不言,下自成蹊</em>——踏踏实实做事情,路自然会走出来。
+      </p>
+      <p>
+        主要记录三类内容:AI Agent 相关的学习笔记、论文阅读与代码复现过程,
+        以及一些不成体系的生活随笔。写作的目的是帮助自己把问题想清楚,
+        如果能顺便帮到同行的人,那就更好了。
+      </p>
+
+      <h2 class="serif">关于我</h2>
+      <p>
+        正在攻读研究生,研究方向是 <strong>AI Agent 与计算机视觉</strong>。
+        对「智能体如何规划、记忆、调用工具」这类问题着迷。
+      </p>
+      <p>
+        技术栈方面常用 Python,正在补机器学习和系统设计的基础。
+        这个博客本身是我用 AI 工具搭起来的,也是学习的一部分。
+      </p>
+
+      <h2 class="serif">联系</h2>
+      <p>
+        欢迎交流。可以在文章的评论区留言(如果开着的话),
+        或者通过页面底部的邮箱联系我(占位,待补充)。
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-page { padding: var(--space-5) 0 0; }
+  .about-head { margin-bottom: var(--space-4); }
+  .about-head h1 { font-size: var(--fs-h2); margin: 0.25rem 0 0; }
+  .about-body h2 { font-size: 1.3rem; margin: 2em 0 0.8em; }
+  .about-body p { color: var(--ink-soft); margin: 0 0 1.2em; }
+  .about-body strong { color: var(--ink); }
+</style>

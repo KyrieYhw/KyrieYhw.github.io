@@ -1,0 +1,87 @@
+---
+import { formatDate } from '../utils';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  limit?: number;
+  numbered?: boolean;
+  showTags?: boolean;
+}
+const { posts, limit, numbered = false, showTags = true } = Astro.props;
+const items = limit ? posts.slice(0, limit) : posts;
+---
+<ol class="postlist" {numbered ? '' : ''}>
+  {items.map((post, i) => (
+    <li class="row">
+      <div class="row-meta mono">
+        {numbered && <span class="num">{String(i + 1).padStart(2, '0')}</span>}
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+      </div>
+      <div class="row-main">
+        <a href={`/blog/${post.slug}/`} class="row-title serif">
+          {post.data.title}
+        </a>
+        {showTags && post.data.tags.length > 0 && (
+          <span class="row-tags mono">
+            {post.data.tags.slice(0, 3).map((t) => `#${t}`).join(' ')}
+          </span>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .postlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .row {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.15s;
+  }
+  .row:hover {
+    background: color-mix(in srgb, var(--paper-2) 55%, transparent);
+  }
+  .row-meta {
+    flex: none;
+    min-width: 7.5rem;
+    font-size: var(--fs-meta);
+    color: var(--ink-faint);
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .num {
+    color: var(--seal);
+    font-size: var(--fs-meta);
+  }
+  .row-main {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .row-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: color 0.15s;
+  }
+  .row:hover .row-title { color: var(--seal); }
+  .row-tags {
+    font-size: var(--fs-meta);
+    color: var(--ink-faint);
+  }
+  @media (max-width: 560px) {
+    .row { flex-direction: column; gap: 0.3rem; }
+    .row-meta { min-width: 0; }
+  }
+</style>

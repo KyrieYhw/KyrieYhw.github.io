@@ -1,0 +1,42 @@
+---
+import { SITE } from '../consts';
+const year = new Date().getFullYear();
+---
+<footer class="site-foot">
+  <div class="wrap foot-inner">
+    <div class="foot-motto serif">{SITE.motto}</div>
+    <div class="foot-meta mono">
+      <span>© {year} {SITE.author}</span>
+      <span aria-hidden="true">·</span>
+      <a href="/rss.xml">RSS</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-foot {
+    border-top: 1px solid var(--rule);
+    margin-top: var(--space-6);
+    padding: var(--space-4) 0 var(--space-5);
+    background: var(--paper-2);
+  }
+  .foot-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .foot-motto {
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+  }
+  .foot-meta {
+    font-size: var(--fs-meta);
+    color: var(--ink-faint);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .foot-meta a:hover { color: var(--seal); }
+</style>

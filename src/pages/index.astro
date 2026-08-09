@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import PostList from '../components/PostList.astro';
+import { SITE } from '../consts';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const recent = posts.slice(0, 5);
+const techCount = posts.filter((p) => p.data.tags.some((t) => ['AI', '论文', '代码'].includes(t))).length;
+const lifeCount = posts.length - techCount;
+---
+<BaseLayout page="home">
+  <Hero />
+
+  <section class="section wrap" id="recent">
+    <div class="sec-head">
+      <span class="eyebrow">Latest</span>
+      <a href="/blog/" class="sec-link">全部文章 <span aria-hidden="true">→</span></a>
+    </div>
+    <PostList posts={recent} numbered showTags={true} />
+  </section>
+
+  <section class="section wrap stat-line" aria-label="站点统计">
+    <div class="stat">
+      <span class="stat-num serif">{posts.length}</span>
+      <span class="stat-label">篇文章</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num serif">{techCount}</span>
+      <span class="stat-label">技术向</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num serif">{lifeCount}</span>
+      <span class="stat-label">随笔向</span>
+    </div>
+  </section>
+
+  <section class="section wrap about-tease" id="about">
+    <div class="about-grid">
+      <div class="about-left">
+        <span class="eyebrow">About</span>
+        <h2 class="serif about-name">{SITE.author}</h2>
+      </div>
+      <div class="about-right">
+        <p>
+          正在学习 <strong>AI Agent</strong> 方向的研究生,在这里记录论文阅读、代码复现
+          与实验过程中的思考,偶尔也写点生活。
+        </p>
+        <p class="about-more">
+          <a href="/about/">了解更多 <span aria-hidden="true">→</span></a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section {
+    padding: var(--space-5) 0;
+  }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+  }
+  .sec-link {
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+  }
+  .sec-link:hover { color: var(--seal); }
+
+  .stat-line {
+    display: flex;
+    gap: 3rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: var(--space-3) 0;
+  }
+  .stat { display: flex; align-items: baseline; gap: 0.5rem; }
+  .stat-num { font-size: 2rem; color: var(--ink); }
+  .stat-label { font-size: var(--fs-small); color: var(--ink-faint); }
+
+  .about-tease { padding-bottom: 0; }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    padding: var(--space-4) 0;
+  }
+  .about-name { margin: 0.25rem 0 0; font-size: 1.6rem; }
+  .about-right p { margin: 0 0 var(--space-2); color: var(--ink-soft); }
+  .about-more a { color: var(--seal); font-size: var(--fs-small); }
+  .about-more a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .stat-line { gap: 2rem; }
+  }
+</style>
