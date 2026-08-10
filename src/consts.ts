@@ -7,7 +7,7 @@ export const SITE = {
   // 作者称呼(显示在首页)
   author: 'KyrieYang',
   // 一句话定位
-  tagline: 'AI Agent 方向研究生的学习手记',
+  tagline: '我杂乱无章的记事本',
   // 部署后的网址(等 GitHub Pages 部署完再改,格式 https://用户名.github.io)
   url: 'https://KyrieYhw.github.io',
   // 站点简介
