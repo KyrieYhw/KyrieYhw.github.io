@@ -11,7 +11,7 @@ export const SITE = {
   // 部署后的网址(等 GitHub Pages 部署完再改,格式 https://用户名.github.io)
   url: 'https://KyrieYhw.github.io',
   // 站点简介
-  description: '记录 AI 与机器学习的学习笔记、论文阅读、代码实践,以及一些生活随笔。',
+  description: '杂乱无章的记事本,分享一些随笔。',
   // 页脚小字(可自定义)
   motto: '记录思考,保持好奇。',
 };
