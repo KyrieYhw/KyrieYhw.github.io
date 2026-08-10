@@ -8,7 +8,9 @@ interface Props {
   text: string;
 }
 const { size = 44, text } = Astro.props;
+// 根据字数自适应排版:1 字居中、2 字横排、4 字 2×2
 const chars = text.slice(0, 4).split('');
+const layout = chars.length === 1 ? 'one' : chars.length === 2 ? 'two' : 'four';
 ---
 <div
   class="seal"
@@ -16,7 +18,7 @@ const chars = text.slice(0, 4).split('');
   aria-label={`站点印章 ${text}`}
   style={{ width: size + 'px', height: size + 'px' }}
 >
-  <span class="seal-inner">{chars.map((c) => <span class="seal-char">{c}</span>)}</span>
+  <span class={`seal-inner seal-${layout}`}>{chars.map((c) => <span class="seal-char">{c}</span>)}</span>
 </div>
 
 <style>
@@ -35,15 +37,28 @@ const chars = text.slice(0, 4).split('');
     border: 1px solid var(--seal);
     border-radius: 2px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
     place-items: center;
     padding: 2px;
+  }
+  /* 4 字 → 2×2 网格 */
+  .seal-four {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+  /* 2 字 → 横排 */
+  .seal-two {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.15em;
+  }
+  /* 1 字 → 居中 */
+  .seal-one {
+    grid-template-columns: 1fr;
   }
   .seal-char {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 0.5em;
     line-height: 1;
+    text-align: center;
   }
 </style>
