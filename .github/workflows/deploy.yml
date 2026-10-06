@@ -30,9 +30,16 @@ jobs:
       - name: Prepare Dan Koe static article
         shell: bash
         run: |
-          base64 -d public/dan-koe-life-reset/content.gz.b64 > /tmp/dan-koe-content.gz
+          cat public/dan-koe-life-reset/payload-part-aa \
+              public/dan-koe-life-reset/payload-part-ab \
+              public/dan-koe-life-reset/payload-part-ac \
+              public/dan-koe-life-reset/payload-part-ad \
+              public/dan-koe-life-reset/payload-part-ae \
+              public/dan-koe-life-reset/payload-part-af \
+            | base64 -d > /tmp/dan-koe-content.gz
           gzip -dc /tmp/dan-koe-content.gz > public/dan-koe-life-reset/content.html
           test -s public/dan-koe-life-reset/content.html
+          grep -q "chapter-vii" public/dan-koe-life-reset/content.html
       - name: Build
         run: npm run build
       - name: Setup Pages
