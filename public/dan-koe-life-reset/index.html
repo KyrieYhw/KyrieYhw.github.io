@@ -5,6 +5,5 @@
 <div class="footer-note">中英对照阅读网页 · 内容依据用户提供文档整理，未改变正文顺序。</div>
 <script>
 function init(){const root=document.documentElement, body=document.body;const saved=localStorage.getItem('dankoe-theme');if(saved)root.dataset.theme=saved;document.getElementById('theme').onclick=()=>{const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;localStorage.setItem('dankoe-theme',next)};document.getElementById('both').onclick=()=>body.className='';document.getElementById('zh').onclick=()=>body.className='only-zh';document.getElementById('en').onclick=()=>body.className='only-en';const bar=document.querySelector('.progress');addEventListener('scroll',()=>{const d=document.documentElement,max=d.scrollHeight-d.clientHeight;bar.style.width=(max?d.scrollTop/max*100:0)+'%'});}
-Promise.all(['content-1.html','content-2.html','content-3.html'].map(x=>fetch(x).then(r=>r.text())))
-  .then(xs=>{document.getElementById('article-content').innerHTML=xs.join('');init()});
+fetch('content.gz.b64').then(r=>r.text()).then(async b64=>{const bytes=Uint8Array.from(atob(b64.trim()),c=>c.charCodeAt(0));const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));const html=await new Response(stream).text();document.getElementById('article-content').innerHTML=html;init();});
 </script></body></html>
